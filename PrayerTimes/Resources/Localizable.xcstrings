@@ -3589,6 +3589,29 @@
         }
       }
     },
+    "Dismiss": {
+      "comment": "Focus overlay: dismiss button",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إغلاق"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "বন্ধ করুন"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapat"
+          }
+        }
+      }
+    },
     "Display": {
       "localizations": {
         "ar": {

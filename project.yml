@@ -47,3 +47,27 @@ targets:
         # Local dev signs ad-hoc; CI overrides with Developer ID (spec §13).
         CODE_SIGN_STYLE: Automatic
         CODE_SIGN_IDENTITY: "-"
+
+  PrayerTimesTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: PrayerTimesTests
+    dependencies:
+      - target: PrayerTimes
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: co.tareq.prayertimes.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Prayer Times.app/Contents/MacOS/Prayer Times"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+
+schemes:
+  PrayerTimes:
+    build:
+      targets:
+        PrayerTimes: all
+        PrayerTimesTests: [test]
+    test:
+      targets:
+        - PrayerTimesTests

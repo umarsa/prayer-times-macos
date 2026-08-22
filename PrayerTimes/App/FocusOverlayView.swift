@@ -18,6 +18,7 @@ struct FocusOverlayView: View {
     let endsAt: Date
     let emergencyExitEnabled: Bool
     let intensity: FocusBlurIntensity
+    let onDismiss: () -> Void
 
     // Warm gold used for accents and the geometric tracery.
     private let gold = Color(red: 0.86, green: 0.73, blue: 0.45)
@@ -107,9 +108,22 @@ struct FocusOverlayView: View {
             Spacer()
 
             if emergencyExitEnabled {
-                Text(String(localized: "Press ⌘ Esc to exit", comment: "Focus overlay: emergency exit hint"))
-                    .font(.callout)
-                    .foregroundStyle(.white.opacity(0.4))
+                VStack(spacing: 14) {
+                    Button(action: onDismiss) {
+                        Label(String(localized: "Dismiss", comment: "Focus overlay: dismiss button"),
+                              systemImage: "xmark.circle.fill")
+                            .font(.headline)
+                            .padding(.horizontal, 22)
+                            .padding(.vertical, 11)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(gold.opacity(0.9))
+                    .keyboardShortcut(.cancelAction)
+
+                    Text(String(localized: "Press ⌘ Esc to exit", comment: "Focus overlay: emergency exit hint"))
+                        .font(.callout)
+                        .foregroundStyle(.white.opacity(0.4))
+                }
                     .padding(.bottom, 44)
             }
         }

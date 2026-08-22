@@ -113,10 +113,12 @@ final class FocusModeController {
     private func buildWindows(prayer: Prayer, scripture: FocusScripture, endsAt: Date, emergencyExit: Bool, intensity: FocusBlurIntensity) {
         for screen in NSScreen.screens {
             let root = FocusOverlayView(prayer: prayer, scripture: scripture, endsAt: endsAt,
-                                        emergencyExitEnabled: emergencyExit, intensity: intensity)
+                                        emergencyExitEnabled: emergencyExit, intensity: intensity,
+                                        onDismiss: { [weak self] in self?.end() })
             let window = OverlayWindow(
                 contentRect: screen.frame, styleMask: [.borderless],
                 backing: .buffered, defer: false)
+            window.onEmergencyExit = emergencyExit ? { [weak self] in self?.end() } : nil
             window.isReleasedWhenClosed = false
             window.level = NSWindow.Level(rawValue: Int(CGShieldingWindowLevel()))
             window.isOpaque = false
@@ -162,11 +164,17 @@ final class FocusModeController {
     private func installKeyMonitor(emergencyExit: Bool) {
         keyMonitor = NSEvent.addLocalMonitorForEvents(matching: [.keyDown, .keyUp, .flagsChanged]) { [weak self] event in
             if emergencyExit, event.type == .keyDown,
-               event.keyCode == 53, event.modifierFlags.contains(.command) {   // ⌘ + Esc
+               Self.isEmergencyExit(keyCode: event.keyCode, modifiers: event.modifierFlags) {
                 self?.end()
             }
             return nil   // swallow everything else
         }
+    }
+
+    /// Kept separate from AppKit event delivery so the shortcut contract remains
+    /// regression-testable even when CI has no interactive WindowServer session.
+    static func isEmergencyExit(keyCode: UInt16, modifiers: NSEvent.ModifierFlags) -> Bool {
+        keyCode == 53 && modifiers.intersection(.deviceIndependentFlagsMask).contains(.command)
     }
 
     // MARK: Safeguards
@@ -203,6 +211,17 @@ final class FocusModeController {
 /// Borderless windows can't become key by default; the overlay needs key status to
 /// receive the emergency-exit keystroke and to keep focus on itself.
 private final class OverlayWindow: NSWindow {
+    var onEmergencyExit: (() -> Void)?
+
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { true }
+
+    override func keyDown(with event: NSEvent) {
+        if FocusModeController.isEmergencyExit(keyCode: event.keyCode, modifiers: event.modifierFlags),
+           let onEmergencyExit {
+            onEmergencyExit()
+            return
+        }
+        super.keyDown(with: event)
+    }
 }
