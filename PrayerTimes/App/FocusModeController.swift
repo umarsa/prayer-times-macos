@@ -164,7 +164,9 @@ final class FocusModeController {
     private func installKeyMonitor(emergencyExit: Bool) {
         keyMonitor = NSEvent.addLocalMonitorForEvents(matching: [.keyDown, .keyUp, .flagsChanged]) { [weak self] event in
             if emergencyExit, event.type == .keyDown,
-               Self.isEmergencyExit(keyCode: event.keyCode, modifiers: event.modifierFlags) {
+               Self.isEmergencyExit(keyCode: event.keyCode,
+                                    modifiers: event.modifierFlags,
+                                    charactersIgnoringModifiers: event.charactersIgnoringModifiers) {
                 self?.end()
             }
             return nil   // swallow everything else
@@ -173,8 +175,23 @@ final class FocusModeController {
 
     /// Kept separate from AppKit event delivery so the shortcut contract remains
     /// regression-testable even when CI has no interactive WindowServer session.
-    static func isEmergencyExit(keyCode: UInt16, modifiers: NSEvent.ModifierFlags) -> Bool {
-        keyCode == 53 && modifiers.intersection(.deviceIndependentFlagsMask).contains(.command)
+    ///
+    /// Escape is matched by *character* as well as by keycode: a remapped or
+    /// non-US layout can deliver Escape on a keycode other than 53, and matching
+    /// only the keycode silently disarms the exit for those users.
+    ///
+    /// Grave (`) counts too. It sits directly below Escape, so it is what a
+    /// Command-held reach for Escape lands on when the hand shifts down a row —
+    /// and it is what "Grave Escape" keyboards deliberately emit for Escape while
+    /// Command is down. The overlay swallows all input anyway, so ⌘` has no
+    /// competing meaning here, and being wrong about the exit strands the user.
+    static func isEmergencyExit(keyCode: UInt16,
+                                modifiers: NSEvent.ModifierFlags,
+                                charactersIgnoringModifiers: String? = nil) -> Bool {
+        guard modifiers.intersection(.deviceIndependentFlagsMask).contains(.command) else { return false }
+        if keyCode == 53 || keyCode == 50 { return true }
+        guard let scalar = charactersIgnoringModifiers?.unicodeScalars.first else { return false }
+        return scalar == "\u{1b}" || scalar == "`"
     }
 
     // MARK: Safeguards
@@ -217,7 +234,9 @@ private final class OverlayWindow: NSWindow {
     override var canBecomeMain: Bool { true }
 
     override func keyDown(with event: NSEvent) {
-        if FocusModeController.isEmergencyExit(keyCode: event.keyCode, modifiers: event.modifierFlags),
+        if FocusModeController.isEmergencyExit(keyCode: event.keyCode,
+                                               modifiers: event.modifierFlags,
+                                               charactersIgnoringModifiers: event.charactersIgnoringModifiers),
            let onEmergencyExit {
             onEmergencyExit()
             return
