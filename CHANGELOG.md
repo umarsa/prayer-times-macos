@@ -4,6 +4,12 @@ All notable changes to Prayer Times are documented here. This project adheres to
 [Semantic Versioning](https://semver.org) and the
 [Keep a Changelog](https://keepachangelog.com) format.
 
+## [0.6.1] - 2026-08-30
+
+### Fixed
+- **Focus Mode's emergency exit is more reliable.** ⌘Esc is now handled at the overlay window as well as by the key monitor, and the overlay shows a localized **Dismiss** button whenever the emergency exit is enabled — so there is always a visible way out of the screen cover, not only a shortcut you have to remember.
+- **The emergency exit no longer hinges on a single keycode.** Escape is matched by character as well as by keycode, so a remapped key or a non-US layout that delivers Escape on a different keycode still releases the block. ⌘` (grave — the key directly below Escape) is accepted as well: it is what a Command-held reach for Escape lands on when the hand shifts down a row, and what "Grave Escape" keyboards deliberately emit for Escape while Command is held.
+
 ## [0.6.0] - 2026-06-09
 
 ### Added
