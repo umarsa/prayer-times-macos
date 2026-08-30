@@ -6,28 +6,32 @@ Guidance for working in this repository.
 
 **Prayer Times** — a native, free macOS menu bar app showing Islamic prayer
 times with configurable notifications, Adhan playback, pluggable calculation
-methods, localization, and Sparkle/Homebrew self-update. The full implementation
-contract is `spec.md` (read it before non-trivial work). Distribution is GitHub
+methods, localization, and Sparkle/Homebrew self-update. Distribution is GitHub
 Releases + Homebrew Cask; **not** the App Store (so: unsandboxed, Developer ID +
 notarization).
 
 ## Layout
 
 ```
-spec.md                 # the implementation contract (source of truth)
 project.yml             # XcodeGen project definition (app target)
 PrayerTimes.xcodeproj   # GENERATED from project.yml — git-ignored, do not edit
 PrayerKit/              # pure calculation core, a standalone SwiftPM package
   Sources/PrayerKit/Calculation/   # engine, solar math, adapters (no UI/IO)
   Sources/PrayerKit/Models/        # Prayer, PrayerTimes, AppSettings, …
-  Tests/PrayerKitTests/            # 31 tests incl. the Diyanet ±1-min gate
+  Tests/PrayerKitTests/            # 46 tests incl. the Diyanet ±1-min gate
 PrayerTimes/            # the macOS app target (SwiftUI, MenuBarExtra)
   PrayerTimesApp.swift             # @main, MenuBarExtra + Settings scenes
   App/                             # PrayerClock, menu bar label/panel, helpers
   Supporting/Info.plist            # LSUIElement (menu bar agent)
-  Resources/                       # Assets.xcassets
-data/diyanet/           # official Diyanet CSV tables (source for the gate)
+  Resources/                       # Assets.xcassets, sounds, Adhan, xcstrings
+PrayerTimesTests/       # app-target unit tests (run via the PrayerTimes scheme)
+docs/                   # GitHub Pages site + docs/appcast.xml (Sparkle feed)
 ```
+
+The Diyanet ±1-min gate reads its golden tables from
+`PrayerKit/Tests/PrayerKitTests/Resources/DiyanetGoldenTables.json`. The
+dev-only `DiyanetCalibration` harness wants a `data/diyanet/` CSV directory that
+is **not** in the repo, so its two tests skip — that is expected.
 
 **Design rule (do not violate):** the calculation core in `PrayerKit` is pure —
 no UI, no I/O, fully unit-testable. Everything Islam-specific (angles, shadow
@@ -95,14 +99,14 @@ the menu bar, not a window or Dock icon.
   milestone in the body where relevant.
 - Adding a source file to the app target? It's picked up by directory globbing —
   just run `xcodegen generate`. No manual `.pbxproj` edits.
-- All user-facing strings will move to a String Catalog in M6; until then keep
-  new strings centralized (e.g. `PrayerFormatting`) to ease that migration.
+- User-facing strings live in `PrayerTimes/Resources/Localizable.xcstrings`
+  (en/ar/bn/tr). Add new strings there rather than hardcoding them.
 
-## Milestones (see spec §14)
+## Milestones
 
 M1 calculation core ✅ · M2 menu bar shell ✅ · M3 settings + persistence ✅ ·
 M4 notifications + audio + iqamah ✅ · M5 location auto-detect ✅ ·
 M6 localization ✅ (en/ar/bn/tr, 100%) · M7 Liquid Glass ✅ ·
-M8 auto-update + distribution ✅ (Sparkle/appcast/cask; v0.2.1 shipped) ·
+M8 auto-update + distribution ✅ (Sparkle/appcast/cask; v0.6.1 shipped) ·
 M9 widget (nice-to-have) — remaining. See the `prayer-times-status` memory for
 the detailed per-milestone state.
