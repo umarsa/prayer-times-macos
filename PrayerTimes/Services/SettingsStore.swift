@@ -1,5 +1,6 @@
 import Foundation
 import AppKit
+import CoreLocation
 import Observation
 import PrayerKit
 
@@ -34,6 +35,15 @@ final class SettingsStore {
     private(set) var detectedTimeZoneID: String?
     private(set) var isDetectingLocation = false
     private(set) var locationError: String?
+    /// Timing of the periodic re-detect in automatic mode (see `refreshLocationIfDue`).
+    private(set) var locationRefresh = LocationRefreshPolicy()
+
+    /// When the location was last detected successfully; nil until the first fix.
+    var locationDetectedAt: Date? { locationRefresh.lastSuccess }
+
+    /// Below this, a periodic fix at the same place skips reverse geocoding
+    /// (rate-limited, and the country/timezone cannot have changed).
+    private static let geocodeMoveThreshold: CLLocationDistance = 1_000
 
     /// App Group suite to adopt in M9 for widget sharing. nil → standard defaults.
     static let appGroupSuite: String? = nil   // "group.co.tareq.prayertimes"
@@ -50,6 +60,14 @@ final class SettingsStore {
         migrateHighLatitudeRuleIfNeeded()
         migrateMenuBarStyleIfNeeded()
         migrateOnboardingIfNeeded(wasFirstRun: loaded == nil)
+
+        // A wake is the moment a laptop is most likely to have moved: make the
+        // periodic refresh due right away instead of waiting out the interval.
+        NSWorkspace.shared.notificationCenter.addObserver(
+            forName: NSWorkspace.didWakeNotification, object: nil, queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor in self?.locationRefresh.markStale() }
+        }
     }
 
     /// The first-launch setup wizard should run on a genuine fresh install only.
@@ -139,6 +157,20 @@ final class SettingsStore {
         await detectLocation()
     }
 
+    /// Periodic re-detect, driven by the clock tick. In automatic mode the
+    /// location is refreshed every `LocationRefreshPolicy.interval` and right
+    /// after wake, so a laptop that travels while the app stays open computes
+    /// times for where it is now, not where it was launched. Silent: only runs
+    /// when permission was already granted, never prompts.
+    func refreshLocationIfDue(now: Date) {
+        let wantsAuto = settings.locationMode == .automatic || settings.autoDetectMethod
+        guard wantsAuto, !isDetectingLocation, locationRefresh.isDue(at: now) else { return }
+        let authorized = location.authorization == .authorized || location.authorization == .authorizedAlways
+        guard authorized else { return }
+        locationRefresh.didAttempt(at: now)
+        Task { await detectLocation() }
+    }
+
     /// Switch the location mode. Crucially, going Automatic → Manual seeds the
     /// editable coordinates from the *currently resolved* location (the detected
     /// position while still in automatic mode), so the manual fields continue from
@@ -167,11 +199,20 @@ final class SettingsStore {
         defer { isDetectingLocation = false }
         do {
             let loc = try await location.fetchCurrent()
+            let moved = detectedCoordinates.map { previous in
+                loc.distance(from: CLLocation(latitude: previous.latitude, longitude: previous.longitude))
+                    >= Self.geocodeMoveThreshold
+            } ?? true
             detectedCoordinates = Coordinates(
                 latitude: loc.coordinate.latitude,
                 longitude: loc.coordinate.longitude,
                 elevation: loc.altitude
             )
+            locationRefresh.didSucceed(at: Date())
+            // Reverse geocoding is rate-limited and only changes the answer when
+            // the observer actually moved; a periodic fix at the same place keeps
+            // the country and timezone it already has.
+            guard moved || detectedCountryCode == nil else { return }
             let place = await location.place(for: loc)
             detectedCountryCode = place.countryCode
             detectedTimeZoneID = place.timeZone?.identifier

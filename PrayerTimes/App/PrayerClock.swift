@@ -112,6 +112,16 @@ final class PrayerClock {
     /// Whether the full Adhan is currently playing (drives the Stop control).
     var isAdhanPlaying: Bool { audio.isPlaying }
 
+    // MARK: Automatic-location status (for the panel)
+
+    var usesAutomaticLocation: Bool { settings.settings.locationMode == .automatic }
+    var locationDetectedAt: Date? { settings.locationDetectedAt }
+    var isDetectingLocation: Bool { settings.isDetectingLocation }
+    var locationError: String? { settings.locationError }
+
+    /// Re-detect the location now (the panel's status line is clickable).
+    func refreshLocation() { Task { await settings.detectLocation() } }
+
     /// Stop in-process Adhan playback.
     func stopAdhan() { audio.stop() }
 
@@ -138,6 +148,9 @@ final class PrayerClock {
 
     private func tick() {
         now = Date()
+        // Kicks off a re-detect when due; the resulting coordinate change shows
+        // up in `resolvedInputs` on a later tick and recomputes below.
+        settings.refreshLocationIfDue(now: now)
         let inputs = settings.resolvedInputs
         let tz = TimeZone(identifier: inputs.timeZoneID) ?? .current
         let day = Self.civilDay(of: now, in: tz)

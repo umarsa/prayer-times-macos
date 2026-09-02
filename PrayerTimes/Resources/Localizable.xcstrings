@@ -5261,6 +5261,116 @@
           }
         }
       }
+    },
+    "Location updated %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "تم تحديث الموقع %@"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "অবস্থান হালনাগাদ হয়েছে %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Konum güncellendi: %@"
+          }
+        }
+      }
+    },
+    "Locating…": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "جارٍ تحديد الموقع…"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "অবস্থান খোঁজা হচ্ছে…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Konum bulunuyor…"
+          }
+        }
+      }
+    },
+    "Location unavailable. Click to retry.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "الموقع غير متاح. انقر لإعادة المحاولة."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "অবস্থান পাওয়া যায়নি। আবার চেষ্টা করতে ক্লিক করুন।"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Konum alınamadı. Yeniden denemek için tıklayın."
+          }
+        }
+      }
+    },
+    "Location not detected yet": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "لم يتم تحديد الموقع بعد"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "অবস্থান এখনও শনাক্ত হয়নি"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Konum henüz bulunamadı"
+          }
+        }
+      }
+    },
+    "Detect the location again now": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "تحديد الموقع مرة أخرى الآن"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "এখনই আবার অবস্থান শনাক্ত করুন"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Konumu şimdi yeniden bul"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

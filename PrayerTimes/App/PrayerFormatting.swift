@@ -95,6 +95,18 @@ enum PrayerFormatting {
         return f
     }()
 
+    /// Localized "12 min. ago" phrase for a past instant.
+    static func relative(_ date: Date, to now: Date) -> String {
+        relativeFormatter.localizedString(for: date, relativeTo: now)
+    }
+
+    private static let relativeFormatter: RelativeDateTimeFormatter = {
+        let f = RelativeDateTimeFormatter()
+        f.unitsStyle = .short
+        f.dateTimeStyle = .named   // "now" instead of "in 0 sec."
+        return f
+    }()
+
     /// Plain integer formatting (no grouping separators) for the day and year.
     private static let plainNumberFormatter: NumberFormatter = {
         let f = NumberFormatter()

@@ -179,10 +179,30 @@ struct MenuBarPanel: View {
                        clock.timeZone.identifier),
                 systemImage: "location"
             )
+            if clock.usesAutomaticLocation {
+                Button { clock.refreshLocation() } label: {
+                    Label(locationStatus, systemImage: "clock.arrow.circlepath")
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .disabled(clock.isDetectingLocation)
+                .help("Detect the location again now")
+            }
         }
         .font(.caption)
         .foregroundStyle(.secondary)
         .labelStyle(.titleAndIcon)
+    }
+
+    /// "Location updated 12 min. ago" for the automatic location, or why there
+    /// is no fix yet. Re-renders with `clock.now`, so the phrase stays current.
+    private var locationStatus: String {
+        if clock.isDetectingLocation { return String(localized: "Locating…") }
+        if let at = clock.locationDetectedAt {
+            return String(localized: "Location updated \(PrayerFormatting.relative(at, to: clock.now))")
+        }
+        if clock.locationError != nil { return String(localized: "Location unavailable. Click to retry.") }
+        return String(localized: "Location not detected yet")
     }
 
     // MARK: Footer
