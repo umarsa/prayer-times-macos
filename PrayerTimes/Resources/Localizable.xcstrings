@@ -5438,72 +5438,6 @@
         }
       }
     },
-    "Last updated": {
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "آخر تحديث"
-          }
-        },
-        "bn": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "সর্বশেষ হালনাগাদ"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "Son güncelleme"
-          }
-        }
-      }
-    },
-    "Next check": {
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "الفحص التالي"
-          }
-        },
-        "bn": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "পরবর্তী যাচাই"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "Sonraki kontrol"
-          }
-        }
-      }
-    },
-    "Due now": {
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "الآن"
-          }
-        },
-        "bn": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "এখনই"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "Şimdi"
-          }
-        }
-      }
-    },
     "%@: %lld min left": {
       "localizations": {
         "ar": {
@@ -5830,6 +5764,182 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "“Vakit daralıyor”, namazın son tavsiye edilen vaktinden önce uyarır; kurallar Hesaplama → Namaz vakti sınırları altında."
+          }
+        }
+      }
+    },
+    "Updated": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "آخر تحديث"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "হালনাগাদ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Güncellendi"
+          }
+        }
+      }
+    },
+    "Recheck now": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "إعادة الفحص الآن"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "এখনই আবার যাচাই"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Şimdi yeniden kontrol et"
+          }
+        }
+      }
+    },
+    "Not detected yet": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "لم يُحدَّد بعد"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "এখনও শনাক্ত হয়নি"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Henüz bulunamadı"
+          }
+        }
+      }
+    },
+    "Never": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "أبدًا"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "কখনো নয়"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Hiç"
+          }
+        }
+      }
+    },
+    "%@ · next check %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%1$@ · الفحص التالي %2$@"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%1$@ · পরবর্তী যাচাই %2$@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%1$@ · sonraki kontrol %2$@"
+          }
+        }
+      }
+    },
+    "due now": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "الآن"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "এখনই"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "şimdi"
+          }
+        }
+      }
+    },
+    "%lld m": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%lld م"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%lld মি"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%lld m"
+          }
+        }
+      }
+    },
+    "Map": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "الخريطة"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "মানচিত্র"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Harita"
           }
         }
       }

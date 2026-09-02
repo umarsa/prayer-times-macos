@@ -33,6 +33,8 @@ final class SettingsStore {
     private(set) var detectedCoordinates: Coordinates?
     private(set) var detectedCountryCode: String?
     private(set) var detectedTimeZoneID: String?
+    /// City / town of the detected location (display only).
+    private(set) var detectedLocality: String?
     private(set) var isDetectingLocation = false
     private(set) var locationError: String?
     /// Timing of the periodic re-detect in automatic mode (see `refreshLocationIfDue`).
@@ -216,6 +218,7 @@ final class SettingsStore {
             let place = await location.place(for: loc)
             detectedCountryCode = place.countryCode
             detectedTimeZoneID = place.timeZone?.identifier
+            detectedLocality = place.locality
             if settings.autoDetectMethod, let code = place.countryCode {
                 settings.methodID = MethodRegistry.methodID(forCountryCode: code)
             }

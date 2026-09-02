@@ -29,6 +29,10 @@ final class PrayerClock {
     /// civil day, so `tick()` can detect both setting changes and rollover.
     private var lastInputs: ResolvedInputs
     private var lastDay: Date
+    /// Snapshot of the whole settings blob, so a change that does not move the
+    /// times (a reminder lead, a sound, a per-prayer switch) still re-arms the
+    /// notification schedule instead of waiting for the next day or relaunch.
+    private var lastSettings: AppSettings
     /// Previous tick instant, used to detect when a prayer time was just crossed.
     private var previousNow: Date
 
@@ -55,6 +59,7 @@ final class PrayerClock {
         previousNow = start
         let inputs = settings.resolvedInputs
         lastInputs = inputs
+        lastSettings = settings.settings
         let tz = TimeZone(identifier: inputs.timeZoneID) ?? .current
         lastDay = Self.civilDay(of: start, in: tz)
         today = Self.compute(inputs: inputs, dayOffset: 0, from: start)
@@ -145,9 +150,7 @@ final class PrayerClock {
 
     /// Open the coordinates the times are computed for in Google Maps.
     func openLocationInMaps() {
-        let c = coordinates
-        let query = String(format: "%.5f,%.5f", c.latitude, c.longitude)
-        guard let url = URL(string: "https://www.google.com/maps/search/?api=1&query=\(query)") else { return }
+        guard let url = PrayerFormatting.googleMapsURL(coordinates) else { return }
         NSWorkspace.shared.open(url)
     }
 
@@ -190,7 +193,10 @@ final class PrayerClock {
             tomorrow = Self.compute(inputs: inputs, dayOffset: 1, from: now)
             yesterday = Self.compute(inputs: inputs, dayOffset: -1, from: now)
             scheduleNotifications()
+        } else if settings.settings != lastSettings {
+            scheduleNotifications()
         }
+        lastSettings = settings.settings
         firePrayerSoundIfCrossed(from: previousNow, to: now)
         beginFocusIfCrossed(from: previousNow, to: now)
         previousNow = now

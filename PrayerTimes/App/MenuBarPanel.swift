@@ -177,8 +177,11 @@ struct MenuBarPanel: View {
             // Coordinates, timezone and (automatic mode) the age of the fix.
             // Opens the spot in Google Maps.
             Button { clock.openLocationInMaps() } label: {
-                Label(locationLine, systemImage: "location")
-                    .contentShape(Rectangle())
+                HStack(spacing: 4) {
+                    Label(locationLine, systemImage: "location")
+                    Image(systemName: "arrow.up.right.square")
+                }
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .help("Open in Google Maps")

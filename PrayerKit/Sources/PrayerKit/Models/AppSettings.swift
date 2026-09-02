@@ -147,7 +147,9 @@ public struct PrayerNotificationConfig: Codable, Sendable, Equatable, Hashable {
     public var playFullAdhan: Bool
     /// Matrix "Remind" — fire the early reminder.
     public var earlyReminderEnabled: Bool
-    /// Matrix "Ending" — fire the "time running out" reminder.
+    /// Matrix "Ending" — fire the "time running out" reminder. On by default:
+    /// the feature is switched on once by setting the default lead, and this
+    /// only excludes a prayer from it.
     public var endReminderEnabled: Bool
 
     /// Drawer "Sound" — `nil` inherits `NotificationDefaults.sound`.
@@ -163,7 +165,7 @@ public struct PrayerNotificationConfig: Codable, Sendable, Equatable, Hashable {
         notify: Bool = true,
         playFullAdhan: Bool = false,
         earlyReminderEnabled: Bool = false,
-        endReminderEnabled: Bool = false,
+        endReminderEnabled: Bool = true,
         soundOverride: NotificationSound? = nil,
         earlyLeadMinutesOverride: Int? = nil,
         iqamahOffsetMinutesOverride: Int? = nil,
