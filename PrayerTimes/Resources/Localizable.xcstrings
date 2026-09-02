@@ -5262,28 +5262,6 @@
         }
       }
     },
-    "Location updated %@": {
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "تم تحديث الموقع %@"
-          }
-        },
-        "bn": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "অবস্থান হালনাগাদ হয়েছে %@"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "Konum güncellendi: %@"
-          }
-        }
-      }
-    },
     "Locating…": {
       "localizations": {
         "ar": {
@@ -5350,24 +5328,178 @@
         }
       }
     },
-    "Detect the location again now": {
+    "Location unavailable. Recheck in %@": {
       "localizations": {
         "ar": {
           "stringUnit": {
             "state": "needs_review",
-            "value": "تحديد الموقع مرة أخرى الآن"
+            "value": "الموقع غير متاح. إعادة الفحص خلال %@"
           }
         },
         "bn": {
           "stringUnit": {
             "state": "needs_review",
-            "value": "এখনই আবার অবস্থান শনাক্ত করুন"
+            "value": "অবস্থান পাওয়া যায়নি। %@ পরে আবার যাচাই"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "needs_review",
-            "value": "Konumu şimdi yeniden bul"
+            "value": "Konum alınamadı. %@ sonra yeniden denenecek"
+          }
+        }
+      }
+    },
+    "Location recheck in %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "إعادة فحص الموقع خلال %@"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%@ পরে অবস্থান আবার যাচাই"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Konum %@ sonra yeniden kontrol edilecek"
+          }
+        }
+      }
+    },
+    "Location recheck due": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "حان وقت إعادة فحص الموقع"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "অবস্থান আবার যাচাইয়ের সময় হয়েছে"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Konum yeniden kontrol edilecek"
+          }
+        }
+      }
+    },
+    "Open in Google Maps": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "فتح في خرائط Google"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Google Maps-এ খুলুন"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Google Haritalar'da aç"
+          }
+        }
+      }
+    },
+    "Recheck the location now": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "إعادة فحص الموقع الآن"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "এখনই অবস্থান আবার যাচাই করুন"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Konumu şimdi yeniden kontrol et"
+          }
+        }
+      }
+    },
+    "Last updated": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "آخر تحديث"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "সর্বশেষ হালনাগাদ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Son güncelleme"
+          }
+        }
+      }
+    },
+    "Next check": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "الفحص التالي"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "পরবর্তী যাচাই"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Sonraki kontrol"
+          }
+        }
+      }
+    },
+    "Due now": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "الآن"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "এখনই"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Şimdi"
           }
         }
       }

@@ -1,4 +1,5 @@
 import Foundation
+import AppKit
 import Observation
 import PrayerKit
 
@@ -118,9 +119,18 @@ final class PrayerClock {
     var locationDetectedAt: Date? { settings.locationDetectedAt }
     var isDetectingLocation: Bool { settings.isDetectingLocation }
     var locationError: String? { settings.locationError }
+    var locationNextCheckAt: Date { settings.locationRefresh.nextAttempt }
 
-    /// Re-detect the location now (the panel's status line is clickable).
+    /// Re-detect the location now (the panel's recheck line is clickable).
     func refreshLocation() { Task { await settings.detectLocation() } }
+
+    /// Open the coordinates the times are computed for in Google Maps.
+    func openLocationInMaps() {
+        let c = coordinates
+        let query = String(format: "%.5f,%.5f", c.latitude, c.longitude)
+        guard let url = URL(string: "https://www.google.com/maps/search/?api=1&query=\(query)") else { return }
+        NSWorkspace.shared.open(url)
+    }
 
     /// Stop in-process Adhan playback.
     func stopAdhan() { audio.stop() }

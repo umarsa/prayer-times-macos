@@ -16,7 +16,8 @@ public struct LocationRefreshPolicy: Sendable, Equatable {
     public var retry: TimeInterval
     /// When the location was last detected successfully; nil until the first fix.
     public private(set) var lastSuccess: Date?
-    private var nextAttempt: Date = .distantPast
+    /// When the next attempt becomes due (`.distantPast` = due now).
+    public private(set) var nextAttempt: Date = .distantPast
 
     public init(interval: TimeInterval = 30 * 60, retry: TimeInterval = 2 * 60) {
         self.interval = interval

@@ -44,6 +44,15 @@ struct LocationTimeTab: View {
                         Label(warning, systemImage: "exclamationmark.triangle.fill")
                             .font(.caption).foregroundStyle(.orange)
                     }
+                    // The location is re-detected periodically (and after wake);
+                    // show the schedule. Re-rendered every 30 s so the age stays honest.
+                    if let updatedAt = settings.locationDetectedAt {
+                        TimelineView(.periodic(from: .now, by: 30)) { context in
+                            LabeledContent("Last updated", value:
+                                "\(PrayerFormatting.clock(updatedAt, in: settings.resolvedTimeZone)) (\(PrayerFormatting.relative(updatedAt, to: context.date)))")
+                            LabeledContent("Next check", value: nextCheckText(now: context.date))
+                        }
+                    }
                 }
 
                 // Automatic mode uses the detected coordinates (shown read-only so
@@ -123,6 +132,11 @@ struct LocationTimeTab: View {
     }
 
     // MARK: Bindings
+
+    private func nextCheckText(now: Date) -> String {
+        let next = settings.locationRefresh.nextAttempt
+        return next <= now ? String(localized: "Due now") : PrayerFormatting.clock(next, in: settings.resolvedTimeZone)
+    }
 
     private var locationModeBinding: Binding<LocationMode> {
         Binding(
