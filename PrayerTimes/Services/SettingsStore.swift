@@ -22,14 +22,21 @@ final class SettingsStore {
 
     @ObservationIgnored private let defaults: UserDefaults
     @ObservationIgnored private let key = "appSettings.v1"
+    @ObservationIgnored private let lastFixKey = "lastLocationFix.v1"
     @ObservationIgnored private let location: LocationService
 
-    /// True when no settings were persisted yet (a genuine first launch). Lets the
-    /// launch path prompt for location permission in automatic mode exactly once,
-    /// without re-prompting on every subsequent launch.
-    @ObservationIgnored private let isFirstRun: Bool
+    /// The last successful fix, remembered across relaunches so the app starts
+    /// from where it last was (times right immediately, "updated 5 h ago") and
+    /// the periodic refresh then confirms or moves it.
+    private struct LastFix: Codable {
+        var coordinates: Coordinates
+        var countryCode: String?
+        var timeZoneID: String?
+        var locality: String?
+        var at: Date
+    }
 
-    // Runtime auto-detect state (not persisted).
+    // Auto-detect state: the last fix is persisted (see `LastFix`), the rest is runtime.
     private(set) var detectedCoordinates: Coordinates?
     private(set) var detectedCountryCode: String?
     private(set) var detectedTimeZoneID: String?
@@ -57,8 +64,15 @@ final class SettingsStore {
             ?? .standard
         self.defaults = resolved
         let loaded = Self.load(from: resolved, key: key)
-        self.isFirstRun = (loaded == nil)
         self.settings = loaded ?? Self.firstRunDefaults
+        if let data = resolved.data(forKey: lastFixKey),
+           let fix = try? JSONDecoder().decode(LastFix.self, from: data) {
+            detectedCoordinates = fix.coordinates
+            detectedCountryCode = fix.countryCode
+            detectedTimeZoneID = fix.timeZoneID
+            detectedLocality = fix.locality
+            locationRefresh = LocationRefreshPolicy(lastSuccess: fix.at)
+        }
         migrateHighLatitudeRuleIfNeeded()
         migrateMenuBarStyleIfNeeded()
         migrateOnboardingIfNeeded(wasFirstRun: loaded == nil)
@@ -146,17 +160,18 @@ final class SettingsStore {
 
     // MARK: Auto-detect (CoreLocation)
 
-    /// On launch, detect the location when the user is in automatic mode. On a
-    /// genuine first launch we *do* prompt for permission (the new default is
-    /// automatic, so the app should work out of the box). On every later launch we
-    /// only refresh silently when permission was already granted — never re-prompt
-    /// (a user who declined or switched to Manual is left alone).
+    /// On launch, detect the location when the user is in automatic mode. Prompts
+    /// whenever the permission question is still open (`.notDetermined`: a fresh
+    /// install, or a rebuilt binary whose permission macOS reset, which an ad-hoc
+    /// signed app hits on every update); a user who declined (`.denied`) or
+    /// switched to Manual is left alone.
     func detectLocationIfNeeded() async {
         let wantsAuto = settings.locationMode == .automatic || settings.autoDetectMethod
         guard wantsAuto else { return }
-        let authorized = location.authorization == .authorized || location.authorization == .authorizedAlways
-        guard authorized || isFirstRun else { return }
-        await detectLocation()
+        switch location.authorization {
+        case .denied, .restricted: return
+        default: await detectLocation()
+        }
     }
 
     /// Periodic re-detect, driven by the clock tick. In automatic mode the
@@ -211,6 +226,7 @@ final class SettingsStore {
                 elevation: loc.altitude
             )
             locationRefresh.didSucceed(at: Date())
+            persistLastFix()
             // Reverse geocoding is rate-limited and only changes the answer when
             // the observer actually moved; a periodic fix at the same place keeps
             // the country and timezone it already has.
@@ -219,6 +235,7 @@ final class SettingsStore {
             detectedCountryCode = place.countryCode
             detectedTimeZoneID = place.timeZone?.identifier
             detectedLocality = place.locality
+            persistLastFix()
             if settings.autoDetectMethod, let code = place.countryCode {
                 settings.methodID = MethodRegistry.methodID(forCountryCode: code)
             }
@@ -230,6 +247,15 @@ final class SettingsStore {
             }
         } catch {
             locationError = error.localizedDescription
+        }
+    }
+
+    private func persistLastFix() {
+        guard let coordinates = detectedCoordinates, let at = locationRefresh.lastSuccess else { return }
+        let fix = LastFix(coordinates: coordinates, countryCode: detectedCountryCode,
+                          timeZoneID: detectedTimeZoneID, locality: detectedLocality, at: at)
+        if let data = try? JSONEncoder().encode(fix) {
+            defaults.set(data, forKey: lastFixKey)
         }
     }
 

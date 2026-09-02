@@ -19,9 +19,12 @@ public struct LocationRefreshPolicy: Sendable, Equatable {
     /// When the next attempt becomes due (`.distantPast` = due now).
     public private(set) var nextAttempt: Date = .distantPast
 
-    public init(interval: TimeInterval = 30 * 60, retry: TimeInterval = 2 * 60) {
+    /// `lastSuccess` seeds a remembered fix from a previous run; the first
+    /// check is still due immediately, since the machine may have moved since.
+    public init(interval: TimeInterval = 30 * 60, retry: TimeInterval = 2 * 60, lastSuccess: Date? = nil) {
         self.interval = interval
         self.retry = retry
+        self.lastSuccess = lastSuccess
     }
 
     /// Whether a detection attempt should be started now.
