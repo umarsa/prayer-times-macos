@@ -95,17 +95,14 @@ enum PrayerFormatting {
         return f
     }()
 
-    /// Localized "12 min. ago" phrase for a past instant.
+    /// Localized "12 min. ago" phrase for a past instant. Built per call:
+    /// `RelativeDateTimeFormatter` is not Sendable, so it cannot be a cached static.
     static func relative(_ date: Date, to now: Date) -> String {
-        relativeFormatter.localizedString(for: date, relativeTo: now)
-    }
-
-    private static let relativeFormatter: RelativeDateTimeFormatter = {
         let f = RelativeDateTimeFormatter()
         f.unitsStyle = .short
         f.dateTimeStyle = .named   // "now" instead of "in 0 sec."
-        return f
-    }()
+        return f.localizedString(for: date, relativeTo: now)
+    }
 
     /// Plain integer formatting (no grouping separators) for the day and year.
     private static let plainNumberFormatter: NumberFormatter = {

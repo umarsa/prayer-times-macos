@@ -38,8 +38,8 @@ jobs:
             -destination 'generic/platform=macOS' -derivedDataPath "$RUNNER_TEMP/dd" \
             ARCHS=arm64 ONLY_ACTIVE_ARCH=NO \
             CODE_SIGN_IDENTITY="-" CODE_SIGNING_REQUIRED=YES CODE_SIGNING_ALLOWED=YES \
-            ENABLE_HARDENED_RUNTIME=NO build | grep -E "error:|warning:.*\.swift|BUILD" || true
-          test -d "$RUNNER_TEMP/dd/Build/Products/Release/$APP_NAME.app"
+            ENABLE_HARDENED_RUNTIME=NO -quiet build
+          test -x "$RUNNER_TEMP/dd/Build/Products/Release/$APP_NAME.app/Contents/MacOS/$APP_NAME"
           ditto -c -k --keepParent "$RUNNER_TEMP/dd/Build/Products/Release/$APP_NAME.app" "$RUNNER_TEMP/PrayerTimes.zip"
 
       - uses: actions/upload-artifact@v4
