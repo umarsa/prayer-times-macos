@@ -44,5 +44,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: PrayerTimes-${{ github.ref_name }}-${{ github.sha }}
+          name: PrayerTimes-run${{ github.run_number }}-${{ github.sha }}
           path: ${{ runner.temp }}/PrayerTimes.zip
