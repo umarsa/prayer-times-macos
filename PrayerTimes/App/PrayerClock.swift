@@ -21,12 +21,18 @@ final class PrayerClock {
     // MARK: Live state
     private(set) var today: PrayerTimes
     private(set) var tomorrow: PrayerTimes
+    /// Only for the pre-Fajr stretch, when the active window is yesterday's Isha.
+    private(set) var yesterday: PrayerTimes
     private(set) var now: Date
 
     /// Cached inputs the current `today`/`tomorrow` were computed from, plus the
     /// civil day, so `tick()` can detect both setting changes and rollover.
     private var lastInputs: ResolvedInputs
     private var lastDay: Date
+    /// Snapshot of the whole settings blob, so a change that does not move the
+    /// times (a reminder lead, a sound, a per-prayer switch) still re-arms the
+    /// notification schedule instead of waiting for the next day or relaunch.
+    private var lastSettings: AppSettings
     /// Previous tick instant, used to detect when a prayer time was just crossed.
     private var previousNow: Date
 
@@ -53,10 +59,12 @@ final class PrayerClock {
         previousNow = start
         let inputs = settings.resolvedInputs
         lastInputs = inputs
+        lastSettings = settings.settings
         let tz = TimeZone(identifier: inputs.timeZoneID) ?? .current
         lastDay = Self.civilDay(of: start, in: tz)
         today = Self.compute(inputs: inputs, dayOffset: 0, from: start)
         tomorrow = Self.compute(inputs: inputs, dayOffset: 1, from: start)
+        yesterday = Self.compute(inputs: inputs, dayOffset: -1, from: start)
 
         // Immediate schedule covers the common relaunch case (permission already
         // granted). On a fresh install the authorization prompt resolves
@@ -93,6 +101,22 @@ final class PrayerClock {
     /// cases where the bounding times are undefined.
     var currentWaqt: CurrentWaqt? {
         CurrentWaqt.resolve(at: now, today: today, tomorrow: tomorrow)
+    }
+
+    /// The obligatory prayer in progress and its cut-off under the window rules
+    /// (the same instant the "time running out" reminder counts toward). `nil`
+    /// in the sunrise→Dhuhr gap, once the cut-off has passed, or if undefined.
+    var currentWindow: (prayer: Prayer, deadline: Date)? {
+        guard let waqt = currentWaqt, waqt.isObligatory else { return nil }
+        let rules = settings.settings.windowRules
+        let deadline: Date?
+        if waqt.prayer == .isha, let fajr = today[.fajr], now < fajr {
+            deadline = yesterday.deadline(for: .isha, nextFajr: fajr, rules: rules)
+        } else {
+            deadline = today.deadline(for: waqt.prayer, nextFajr: tomorrow[.fajr], rules: rules)
+        }
+        guard let deadline, deadline > now else { return nil }
+        return (waqt.prayer, deadline)
     }
 
     /// Today's Ishraq start (sunrise + fixed offset), for the optional panel line.
@@ -167,8 +191,12 @@ final class PrayerClock {
             lastDay = day
             today = Self.compute(inputs: inputs, dayOffset: 0, from: now)
             tomorrow = Self.compute(inputs: inputs, dayOffset: 1, from: now)
+            yesterday = Self.compute(inputs: inputs, dayOffset: -1, from: now)
+            scheduleNotifications()
+        } else if settings.settings != lastSettings {
             scheduleNotifications()
         }
+        lastSettings = settings.settings
         firePrayerSoundIfCrossed(from: previousNow, to: now)
         beginFocusIfCrossed(from: previousNow, to: now)
         previousNow = now
