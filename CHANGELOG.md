@@ -4,6 +4,11 @@ All notable changes to Prayer Times are documented here. This project adheres to
 [Semantic Versioning](https://semver.org) and the
 [Keep a Changelog](https://keepachangelog.com) format.
 
+## [Unreleased]
+
+### Added
+- **Automatic location keeps itself current.** In Automatic mode the location is re-detected every 30 minutes and right after the Mac wakes from sleep, so the times follow you when you travel with the app left running. The dropdown panel shows how old the fix is and when the next check is due (click that line to recheck now), and Settings → Location & time shows the place, coordinates and elevation on one line (opens in Google Maps) with when it was updated, the next check, and a Recheck now button. The panel's coordinates line opens the spot in Google Maps too. The last fix is remembered across relaunches, so the app starts from where it last was instead of from nothing, and a rebuilt app whose location permission macOS reset asks again instead of silently doing nothing.
+
 ## [0.6.1] - 2026-08-30
 
 ### Fixed

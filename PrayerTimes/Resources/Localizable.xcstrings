@@ -5261,6 +5261,358 @@
           }
         }
       }
+    },
+    "Locating…": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "جارٍ تحديد الموقع…"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "অবস্থান খোঁজা হচ্ছে…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Konum bulunuyor…"
+          }
+        }
+      }
+    },
+    "Location unavailable. Click to retry.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "الموقع غير متاح. انقر لإعادة المحاولة."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "অবস্থান পাওয়া যায়নি। আবার চেষ্টা করতে ক্লিক করুন।"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Konum alınamadı. Yeniden denemek için tıklayın."
+          }
+        }
+      }
+    },
+    "Location not detected yet": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "لم يتم تحديد الموقع بعد"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "অবস্থান এখনও শনাক্ত হয়নি"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Konum henüz bulunamadı"
+          }
+        }
+      }
+    },
+    "Location unavailable. Recheck in %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "الموقع غير متاح. إعادة الفحص خلال %@"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "অবস্থান পাওয়া যায়নি। %@ পরে আবার যাচাই"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Konum alınamadı. %@ sonra yeniden denenecek"
+          }
+        }
+      }
+    },
+    "Location recheck in %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "إعادة فحص الموقع خلال %@"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%@ পরে অবস্থান আবার যাচাই"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Konum %@ sonra yeniden kontrol edilecek"
+          }
+        }
+      }
+    },
+    "Location recheck due": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "حان وقت إعادة فحص الموقع"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "অবস্থান আবার যাচাইয়ের সময় হয়েছে"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Konum yeniden kontrol edilecek"
+          }
+        }
+      }
+    },
+    "Open in Google Maps": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "فتح في خرائط Google"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Google Maps-এ খুলুন"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Google Haritalar'da aç"
+          }
+        }
+      }
+    },
+    "Recheck the location now": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "إعادة فحص الموقع الآن"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "এখনই অবস্থান আবার যাচাই করুন"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Konumu şimdi yeniden kontrol et"
+          }
+        }
+      }
+    },
+    "Updated": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "آخر تحديث"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "হালনাগাদ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Güncellendi"
+          }
+        }
+      }
+    },
+    "Recheck now": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "إعادة الفحص الآن"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "এখনই আবার যাচাই"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Şimdi yeniden kontrol et"
+          }
+        }
+      }
+    },
+    "Not detected yet": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "لم يُحدَّد بعد"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "এখনও শনাক্ত হয়নি"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Henüz bulunamadı"
+          }
+        }
+      }
+    },
+    "Never": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "أبدًا"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "কখনো নয়"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Hiç"
+          }
+        }
+      }
+    },
+    "%@ · next check %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%1$@ · الفحص التالي %2$@"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%1$@ · পরবর্তী যাচাই %2$@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%1$@ · sonraki kontrol %2$@"
+          }
+        }
+      }
+    },
+    "due now": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "الآن"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "এখনই"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "şimdi"
+          }
+        }
+      }
+    },
+    "%lld m": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%lld م"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%lld মি"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%lld m"
+          }
+        }
+      }
+    },
+    "Map": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "الخريطة"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "মানচিত্র"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Harita"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
